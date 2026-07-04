@@ -1,0 +1,95 @@
+<?php
+
+namespace App\NativeComponents;
+
+use App\NativeComponents\Concerns\HasYouTubeData;
+use Native\Mobile\Edge\Layouts\Builders\NavAction;
+use Native\Mobile\Edge\Layouts\Builders\NavBarOptions;
+use Native\Mobile\Edge\NativeComponent;
+use Native\Mobile\Edge\Transition;
+
+class YouTubeHome extends NativeComponent
+{
+    use HasYouTubeData;
+
+    public string $activeCategory = 'All';
+
+    public function navTitle(): string
+    {
+        return 'YouTube';
+    }
+
+    /**
+     * Surface YouTube's right-side actions in the framework NavBar instead
+     * of a duplicate inline top row. StackLayout reads this and merges into
+     * its NavBar.
+     */
+    public function navigationOptions(): ?NavBarOptions
+    {
+        return NavBarOptions::make()
+            ->action(NavAction::make('cast')->icon('cart')->press('castDevice'))
+            ->action(NavAction::make('alerts')->icon('notifications')->press('viewNotifications'))
+            ->action(NavAction::make('search')->icon('search')->press('viewSearch'));
+    }
+
+    public function castDevice(): void
+    {
+        // No-op stub for the demo — real impl would open AirPlay / cast picker.
+    }
+
+    public function viewNotifications(): void
+    {
+        // No-op stub for the demo.
+    }
+
+    public function viewVideo(int $index): void
+    {
+        $this->navigate($this->route('youtube.video', $index))
+            ->transition(Transition::SlideFromRight);
+    }
+
+    public function viewChannel(int $index): void
+    {
+        $this->navigate($this->route('youtube.channel', $index))
+            ->transition(Transition::SlideFromRight);
+    }
+
+    public function viewSearch(): void
+    {
+        $this->navigate($this->route('youtube.search'))
+            ->transition(Transition::SlideFromRight);
+    }
+
+    public function selectCategory(string $category): void
+    {
+        $this->activeCategory = $category;
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        $videos = self::ytVideos();
+        $channels = self::ytChannels();
+        $shorts = self::ytShorts();
+        $categories = self::ytCategories();
+
+        $videosWithChannels = [];
+        foreach ($videos as $video) {
+            $video['channel'] = $channels[$video['channelId']];
+            $video['viewsFormatted'] = self::formatYtCount($video['views']);
+            $videosWithChannels[] = $video;
+        }
+
+        $shortsWithChannels = [];
+        foreach ($shorts as $short) {
+            $short['channel'] = $channels[$short['channelId']];
+            $short['viewsFormatted'] = self::formatYtCount($short['views']);
+            $shortsWithChannels[] = $short;
+        }
+
+        return view('youtube-home', [
+            'videos' => $videosWithChannels,
+            'shorts' => $shortsWithChannels,
+            'categories' => $categories,
+        ]);
+    }
+}

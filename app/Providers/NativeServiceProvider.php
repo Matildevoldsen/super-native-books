@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Native\Mobile\Providers\CameraServiceProvider;
+use Native\Mobile\Providers\DeviceServiceProvider;
+use Native\Mobile\Providers\DialogServiceProvider;
+use Native\Mobile\Providers\GeolocationServiceProvider;
+use Native\Mobile\Providers\SecureStorageServiceProvider;
+use Nativephp\NativeUi\NativeUIServiceProvider;
+
+class NativeServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+
+    /**
+     * The NativePHP plugins to enable.
+     *
+     * Only plugins listed here will be compiled into your native builds.
+     * This is a security measure to prevent transitive dependencies from
+     * automatically registering plugins without your explicit consent.
+     *
+     * @return array<int, class-string<ServiceProvider>>
+     */
+    public function plugins(): array
+    {
+        return [
+            NativeUIServiceProvider::class,
+            DialogServiceProvider::class,
+            DeviceServiceProvider::class,
+            //            \Local\DoomGame\DoomGameServiceProvider::class,
+            //            \Native\Mobile\Providers\BackgroundTasksServiceProvider::class,
+            //            \Native\Mobile\Providers\TimerServiceProvider::class,
+            //            \Native\Mobile\Providers\DebugLogServiceProvider::class,
+            //            \NativePhp\SkiaCanvas\SkiaCanvasServiceProvider::class,
+            CameraServiceProvider::class,
+            //            \NativePHP\Vibe\VibeServiceProvider::class, // parked — vibe package currently uninstalled
+            SecureStorageServiceProvider::class,
+            GeolocationServiceProvider::class,
+
+        ];
+    }
+}
