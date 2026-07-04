@@ -4,19 +4,11 @@ A small NativePHP Mobile demo that turns the Super Native starter app into a nat
 
 Repository: [github.com/Matildevoldsen/super-native-books](https://github.com/Matildevoldsen/super-native-books)
 
-## Preview
+## Demo
 
-![Book shelf list](docs/assets/super-native-books-list.png)
+This GIF is captured from the actual iPhone 17 Pro Max simulator run. It shows rating changes, the edit sheet, and row actions in the native UI.
 
-## GIFs
-
-Tap a row to cycle the book rating. The row rating updates and the rating summary animates in the native UI.
-
-![Rating animation](docs/assets/super-native-books-rating.gif)
-
-Open the edit sheet from a list-item action, review the title, description, and rating, then save back into the list.
-
-![Edit sheet flow](docs/assets/super-native-books-actions.gif)
+![Book shelf demo](docs/assets/super-native-books-demo.gif)
 
 ## What It Shows
 
@@ -42,7 +34,7 @@ xcrun simctl list devices
 php artisan native:run ios <simulator-udid> --start-url=/books --no-tty --no-interaction
 ```
 
-The screenshots and GIFs in `docs/assets` were captured from an iPhone 17 Pro Max simulator after launching the `/books` route.
+The GIF in `docs/assets` was captured from an iPhone 17 Pro Max simulator after launching the `/books` route.
 
 ## Main Files
 
